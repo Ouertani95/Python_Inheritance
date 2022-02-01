@@ -31,6 +31,11 @@ def test_function():
     student2.add_subject(subject2)
     student2.add_grade(subject2,9)
 
+    #Testing addition of non Subject objects to Student object
+    student1.add_subject(1)
+    student1.add_grade("whatever",2)
+
+
     #Average grades for student object
     print(student1.average_grades())
     print(student2.average_grades())
@@ -46,6 +51,7 @@ def test_function():
     student2.add_subject(subject4)
     print(student1.ungraded_subjects())
     print(student2.ungraded_subjects())
+
 
 
 if __name__ == "__main__":

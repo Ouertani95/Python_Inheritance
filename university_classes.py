@@ -95,7 +95,10 @@ class Subject:
 
     def set_name(self,name):
         """ change the subject name"""
-        self.name = name
+        if name.__class__.__name__ != "str":
+            print ("Please provide string object to be change the name")
+        else:
+            self.name = name
 
     def get_students(self):
         """get the students assigned to the subject"""
@@ -108,18 +111,25 @@ class Subject:
 
     def add_student(self,student):
         """assign a student to the subject"""
-        if student not in self.students:
+        if student.__class__.__name__ != "Student":
+            print (f"{student} is not a Student object try again")
+        elif student not in self.students:
             student.add_subject(self)
-            return f"""The student {student.name} {student.surname}
-                    was successfully assigned to this subject"""
-        return f"The student {student.name} {student.surname} is already assigned to this subject"
+            print(f"""The student {student.name} {student.surname}
+                    was successfully assigned to this subject""")
+        else:
+            print(f"""The student {student.name} {student.surname}
+                  is already assigned to this subject""")
 
     def remove_student(self,student):
         """remove a student from the subject"""
-        if student in self.students:
+        if student.__class__.__name__ != "Student":
+            print (f"{student} is not a Student object try again")
+        elif student in self.students:
             self.students.remove(student)
-            return "Student removed from this subject"
-        return "Student not in this subject"
+            print("Student removed from this subject")
+        else:
+            print("Student not in this subject")
 
 
     def subject_average(self):
@@ -132,6 +142,8 @@ class Subject:
                 if j.get_name() == self.get_name()and k is not None:
                     sum_grades += k
                     number_subjects += 1
+        if number_subjects == 0 :
+            return "No graded students"
         return f"The average grade of {self.name} is {sum_grades / number_subjects}"
 
 
@@ -148,11 +160,17 @@ class Person:
 
     def set_phone_number(self,phone_number):
         """change phone number of the person"""
-        self.phone_number = phone_number
+        if phone_number.__class__.__name__ != "int":
+            print("Please provide integer object to be change the number")
+        else:
+            self.phone_number = phone_number
 
     def set_email(self,email):
         """change the email of the person"""
-        self.email = email
+        if email.__class__.__name__ != "str":
+            print("Please provide string object to change email")
+        else:
+            self.email = email
 
     def print_resume(self):
         """print the resume of the person attributes"""
@@ -184,11 +202,16 @@ class Student(Person):
 
     def add_subject(self,subject,grade=None):
         """add a new subject to the student"""
-        self.subjects[subject] = grade
-        subject.students.append(self)
+        if subject.__class__.__name__ == "Subject":
+            self.subjects[subject] = grade
+            subject.students.append(self)
+        else:
+            print(f"{subject} is not a Subject object try again")
 
     def remove_subject(self,subject):
         """remove an assigned subject to the student"""
+        if subject.__class__.__name__ != "Subject":
+            return "Please provide Subject object to be removed"
         if subject in self.subjects.keys():
             self.subjects.pop(subject)
             return "Subject removed for this student"
@@ -196,7 +219,9 @@ class Student(Person):
 
     def add_grade(self,subject,grade):
         """add a new grade to an assigned subject for the student"""
-        if subject in self.subjects.keys():
+        if subject.__class__.__name__ != "Subject":
+            print(f"{subject} is not a Subject object try again")
+        elif subject in self.subjects.keys():
             self.subjects[subject] = grade
         else:
             print(f"{self.name} {self.surname} is not assigned to subject :  {subject} ")
@@ -210,6 +235,8 @@ class Student(Person):
             if i is not None:
                 sum_grades += i
                 graded_subjects +=1
+        if graded_subjects == 0:
+            return "No graded subjects"
         return f"The average grade for {self.name} {self.surname} is {sum_grades/graded_subjects}"
 
     def ungraded_subjects(self):
